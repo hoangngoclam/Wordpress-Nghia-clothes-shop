@@ -4,7 +4,7 @@ services:
   wp:
     image: wordpress:latest # https://hub.docker.com/_/wordpress/
     ports:
-      - 80:80 # change ip if required
+      - 8000:80 # change ip if required
     volumes:
       - ./.docker/php/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html # Full wordpress project
@@ -50,6 +50,17 @@ services:
     environment:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    networks:
+      - my_network
+
+  react:
+    image: node:16.14
+    working_dir: /usr/src/app
+    ports:
+      - 80:3000
+    volumes:
+      - ./client-website/:/usr/src/app
+    command: sh ./entrypoint.sh
     networks:
       - my_network
 
